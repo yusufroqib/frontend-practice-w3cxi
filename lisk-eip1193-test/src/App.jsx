@@ -1,13 +1,13 @@
 import "./App.css";
 import Navigation from "./components/navigation/Navigation";
-import Wallet from "./context/Web3Context";
+import WalletProvider from "./context/Web3Context";
 
 function App() {
 	return (
 		<>
-			<Wallet>
+			<WalletProvider>
 				<Navigation />
-			</Wallet>
+			</WalletProvider>
 		
 		</>
 	);

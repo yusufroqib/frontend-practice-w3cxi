@@ -15,7 +15,7 @@ const ConnectedNetwork = () => {
 		return (
 			<Card padding={5}>
 				<Heading>Connected Network</Heading>
-				<Text padding={2}>Unsupported: 0x{chainId?.toString(16)}</Text>
+				<Text padding={2}> 0x{chainId?.toString(16)}</Text>
 			</Card>
 		);
 	}
