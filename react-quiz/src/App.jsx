@@ -1,10 +1,13 @@
 import Quiz from "./components/Quiz";
+import SelectedAnswerProvider from "./context/SelectedAnswerContext";
 
 const App = () => {
 	return (
-		<div className="bg-gray-500">
-			<Quiz />
-		</div>
+		<SelectedAnswerProvider>
+			<div className="bg-gray-500">
+				<Quiz />
+			</div>
+		</SelectedAnswerProvider>
 	);
 };
 

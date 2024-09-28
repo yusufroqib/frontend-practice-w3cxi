@@ -3,38 +3,12 @@ import Result from "./Result";
 import Questions from "./Questions";
 import axios from "axios";
 
-
-// const quizData = [
-// 	{
-// 		type: "multiple",
-// 		difficulty: "hard",
-// 		category: "Science: Computers",
-// 		question:
-// 			"Which of these is not a key value of Agile software development?",
-// 		correct_answer: "Comprehensive documentation",
-// 		incorrect_answers: [
-// 			"Individuals and interactions",
-// 			"Customer collaboration",
-// 			"Responding to change",
-// 		],
-// 	},
-// 	{
-// 		type: "multiple",
-// 		difficulty: "easy",
-// 		category: "Science: Computers",
-// 		question: "This mobile OS held the largest market share in 2012.",
-// 		correct_answer: "iOS",
-// 		incorrect_answers: ["Android", "BlackBerry", "Symbian"],
-// 	},
-// 	// Add more quiz questions here...
-// ];
-
 const Quiz = () => {
 	const [quizData, setQuizData] = useState([]);
 	const [score, setScore] = useState(0);
 	const [showResult, setShowResult] = useState(false);
 	const [retry, setRetry] = useState(false);
-	console.log(retry);
+	// console.log(retry);
 	useEffect(() => {
 		const getQuiz = async () => {
 			const res = await axios.get(
@@ -68,6 +42,7 @@ const Quiz = () => {
 						setShowResult={setShowResult}
 						quizLength={quizData.length}
 						setRetry={setRetry}
+						quizData={quizData}
 					/>
 				) : (
 					<Questions
