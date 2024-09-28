@@ -30,7 +30,24 @@ const Wallet = ({ children }) => {
 		chainId: null,
 	});
 
-w
+	useEffect(() => {
+		const handleConnectAct = async () => {
+			await handleWallet();
+		};
+
+		handleConnectAct();
+
+		const handle_Account_Change = () => handleAccountChange(setState);
+		const handle_Chain_Change = () => handleChainChange(setState);
+
+		window.ethereum.on("accountsChanged", handle_Account_Change);
+		window.ethereum.on("chainChanged", handle_Chain_Change);
+		return () => {
+			window.ethereum.removeListener("accountsChanged", handle_Account_Change);
+
+			window.ethereum.removeListener("chainChanged", handle_Chain_Change);
+		};
+	}, []);
 
 	const handleWallet = async () => {
 		try {
