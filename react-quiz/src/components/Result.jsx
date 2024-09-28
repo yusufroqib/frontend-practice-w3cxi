@@ -17,7 +17,8 @@ const Result = ({ score, quizLength, setShowResult, setRetry }) => {
 		setShowResult(false);
 		setRetry(true);
 	};
-	// reset the quiz
+
+
 	const handleReset = async () => {
 		try {
 			setIsResetting(true);
@@ -34,6 +35,7 @@ const Result = ({ score, quizLength, setShowResult, setRetry }) => {
 			setIsResetting(false);
 		}
 	};
+	
 	return (
 		<div className="space-y-2">
 			<h2>Quiz Completed</h2>

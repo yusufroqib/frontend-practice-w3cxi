@@ -9,8 +9,6 @@ const Questions = ({ quizData, setScore, setShowResult, retry }) => {
 		setCurrentQuestionIndex,
 	} = useContext(SelectedAnswerContext);
 
-
-
 	useEffect(() => {
 		if (retry) {
 			setCurrentQuestionIndex(0);
@@ -89,6 +87,7 @@ const Questions = ({ quizData, setScore, setShowResult, retry }) => {
 								onChange={() => handleAnswerSelect(answer)}
 								checked={selectedAnswer[currentQuestionIndex] === answer}
 							/>
+							{"   "}
 							{decodeHtmlEntities(answer)}
 						</label>
 					</li>
