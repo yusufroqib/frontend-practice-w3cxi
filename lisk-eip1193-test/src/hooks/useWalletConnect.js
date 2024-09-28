@@ -19,11 +19,7 @@ const useWalletConnect = () => {
 	const [balance, setBalance] = useState(0);
 
 	useEffect(() => {
-		const handleConnectAct = async () => {
-			await handleWallet();
-		};
-
-		handleConnectAct();
+		connectWallet();
 
 		window.ethereum.on("accountsChanged", handleAccountChange);
 		window.ethereum.on("chainChanged", handleChainChange);
@@ -33,6 +29,38 @@ const useWalletConnect = () => {
 			window.ethereum.removeListener("chainChanged", handleChainChange);
 		};
 	}, []);
+
+	const connectWallet = async () => {
+		try {
+			setIsLoading(true);
+			let chainId = null;
+			if (!window.ethereum) {
+				throw new Error("Metamask is not installed");
+			}
+			const accounts = await window.ethereum.request({
+				method: "eth_requestAccounts",
+			});
+
+			let chainIdHex = await window.ethereum.request({
+				method: "eth_chainId",
+			});
+
+			chainId = parseInt(chainIdHex, 16);
+
+			let selectedAccount = accounts[0];
+			if (!selectedAccount) {
+				throw new Error("no ethereum accounts is available");
+			}
+			setState((prev) => {
+				return { ...prev, selectedAccount, chainId };
+			});
+		} catch (error) {
+			console.error("Error connecting Wallet: ", error.message);
+			throw error;
+		} finally {
+			setIsLoading(false);
+		}
+	};
 
 	const handleAccountChange = async () => {
 		const accounts = await window.ethereum.request({
@@ -56,9 +84,9 @@ const useWalletConnect = () => {
 				params: [account, "latest"],
 			});
 
-			const balanceInEther = parseFloat(
-				parseInt(balance, 16) / Math.pow(10, 18)
-			).toFixed(4);
+			const balanceInEther = parseFloat(parseInt(balance, 16) / 1e18).toFixed(
+				4
+			);
 			// return balanceInEther;
 			setBalance(balanceInEther);
 		} catch (error) {
@@ -67,45 +95,6 @@ const useWalletConnect = () => {
 		}
 	};
 
-	const connectWallet = async () => {
-		try {
-			let chainId = null;
-			if (!window.ethereum) {
-				throw new Error("Metamask is not installed");
-			}
-			const accounts = await window.ethereum.request({
-				method: "eth_requestAccounts",
-			});
-
-			let chainIdHex = await window.ethereum.request({
-				method: "eth_chainId",
-			});
-
-			chainId = parseInt(chainIdHex, 16);
-
-			let selectedAccount = accounts[0];
-			if (!selectedAccount) {
-				throw new Error("no ethereum accounts is available");
-			}
-
-			return { selectedAccount, chainId };
-		} catch (error) {
-			console.error(error);
-			throw error;
-		}
-	};
-
-	const handleWallet = async () => {
-		try {
-			setIsLoading(true);
-			const { selectedAccount, chainId } = await connectWallet();
-			setState({ selectedAccount, chainId });
-		} catch (error) {
-			console.error("Error connecting Wallet: ", error.message);
-		} finally {
-			setIsLoading(false);
-		}
-	};
 	const requestAccount = async () => {
 		if (window.ethereum) {
 			try {
@@ -140,8 +129,6 @@ const useWalletConnect = () => {
 				method: "wallet_addEthereumChain",
 				params: [network.liskSepolia],
 			});
-			const { selectedAccount, chainId } = await connectWallet();
-			setState({ selectedAccount, chainId });
 		} catch (error) {
 			console.error("Error adding chain: ", error.message);
 		}
@@ -153,8 +140,6 @@ const useWalletConnect = () => {
 				method: "wallet_switchEthereumChain",
 				params: [{ chainId: "0x1" }],
 			});
-			const { selectedAccount, chainId } = await connectWallet();
-			setState({ selectedAccount, chainId });
 		} catch (error) {
 			console.error("Error switching chain: ", error.message);
 		}
@@ -169,7 +154,6 @@ const useWalletConnect = () => {
 		handleChainChange,
 		state,
 		isLoading,
-		handleWallet,
 		setState,
 		getWalletBalance,
 		balance,
