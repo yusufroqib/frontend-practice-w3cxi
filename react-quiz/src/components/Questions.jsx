@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { SelectedAnswerContext } from "../context/SelectedAnswerContext";
 
 const Questions = ({ quizData, setScore, setShowResult, retry }) => {
-	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-	// const [selectedAnswer, setSelectedAnswer] = useState({});
-	const { selectedAnswer, setSelectedAnswer } = useContext(
-		SelectedAnswerContext
-	);
+	const {
+		selectedAnswer,
+		setSelectedAnswer,
+		currentQuestionIndex,
+		setCurrentQuestionIndex,
+	} = useContext(SelectedAnswerContext);
 
-	// const { selectedAnswer, setSelectedAnswer } = useSelectAnswer();
-	// console.log(retry);
+
 
 	useEffect(() => {
 		if (retry) {
@@ -86,11 +86,10 @@ const Questions = ({ quizData, setScore, setShowResult, retry }) => {
 							<input
 								type="radio"
 								name="answer"
-								value={decodeHtmlEntities(answer)}
 								onChange={() => handleAnswerSelect(answer)}
 								checked={selectedAnswer[currentQuestionIndex] === answer}
 							/>
-							{answer}
+							{decodeHtmlEntities(answer)}
 						</label>
 					</li>
 				))}

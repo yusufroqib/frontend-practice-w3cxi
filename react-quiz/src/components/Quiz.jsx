@@ -1,21 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Result from "./Result";
 import Questions from "./Questions";
 import axios from "axios";
+import { SelectedAnswerContext } from "../context/SelectedAnswerContext";
 
 const Quiz = () => {
-	const [quizData, setQuizData] = useState([]);
 	const [score, setScore] = useState(0);
 	const [showResult, setShowResult] = useState(false);
 	const [retry, setRetry] = useState(false);
-	// console.log(retry);
+	// const [isNewQuestions, setIsNewQuestions] = useState(false);
+	const { quizData, setQuizData } = useContext(SelectedAnswerContext);
+
 	useEffect(() => {
 		const getQuiz = async () => {
-			const res = await axios.get(
-				"https://opentdb.com/api.php?amount=10&type=multiple"
-			);
-			console.log(res.data);
-			setQuizData(res.data.results);
+			try {
+				const res = await axios.get(
+					"https://opentdb.com/api.php?amount=10&type=multiple"
+				);
+				console.log(res.data);
+				setQuizData(res.data.results);
+			} catch (error) {
+				console.log(error);
+			}
 		};
 		getQuiz();
 	}, []);
@@ -42,7 +48,6 @@ const Quiz = () => {
 						setShowResult={setShowResult}
 						quizLength={quizData.length}
 						setRetry={setRetry}
-						quizData={quizData}
 					/>
 				) : (
 					<Questions

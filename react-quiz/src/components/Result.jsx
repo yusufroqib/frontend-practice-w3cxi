@@ -1,8 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { SelectedAnswerContext } from "../context/SelectedAnswerContext";
+import axios from "axios";
 
-const Result = ({ score, quizLength, setShowResult, setRetry, quizData }) => {
-	const { selectedAnswer } = useContext(SelectedAnswerContext);
+const Result = ({ score, quizLength, setShowResult, setRetry }) => {
+	const { selectedAnswer, setCurrentQuestionIndex, quizData, setQuizData } =
+		useContext(SelectedAnswerContext);
+	const [isResetting, setIsResetting] = useState(false);
 
 	const decodeHtmlEntities = (str) => {
 		const parser = new DOMParser();
@@ -14,6 +17,23 @@ const Result = ({ score, quizLength, setShowResult, setRetry, quizData }) => {
 		setShowResult(false);
 		setRetry(true);
 	};
+	// reset the quiz
+	const handleReset = async () => {
+		try {
+			setIsResetting(true);
+			const res = await axios.get(
+				"https://opentdb.com/api.php?amount=10&type=multiple"
+			);
+			console.log(res.data);
+			setQuizData(res.data.results);
+			setShowResult(false);
+			setCurrentQuestionIndex(0);
+		} catch (error) {
+			console.log(error);
+		} finally {
+			setIsResetting(false);
+		}
+	};
 	return (
 		<div className="space-y-2">
 			<h2>Quiz Completed</h2>
@@ -21,12 +41,20 @@ const Result = ({ score, quizLength, setShowResult, setRetry, quizData }) => {
 				Your score: {score} out of {quizLength}
 			</p>
 
-			<button
-				className="bg-yellow-500 p-2 rounded-md disabled:opacity-30"
-				onClick={handleRetry}
-			>
-				Retry
-			</button>
+			<div className="flex justify-between">
+				<button
+					className="bg-yellow-500 p-2 rounded-md disabled:opacity-30"
+					onClick={handleRetry}
+				>
+					Retry
+				</button>
+				<button
+					className="bg-red-500 p-2 rounded-md disabled:opacity-30 text-white"
+					onClick={handleReset}
+				>
+					{!isResetting ? "Reset Questions" : "Resetting..."}
+				</button>
+			</div>
 
 			<div>
 				<h3 className="text-2xl mb-3">Correction</h3>
