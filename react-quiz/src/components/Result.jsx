@@ -35,11 +35,11 @@ const Result = ({ score, quizLength, setShowResult, setRetry }) => {
 			setIsResetting(false);
 		}
 	};
-	
+
 	return (
 		<div className="space-y-2">
-			<h2>Quiz Completed</h2>
-			<p>
+			<h2 className="text-3xl">Quiz Completed</h2>
+			<p className="text-xl ">
 				Your score: {score} out of {quizLength}
 			</p>
 
