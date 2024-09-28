@@ -4,7 +4,6 @@ import { Card, Heading, Text } from "@chakra-ui/react";
 
 const ConnectedAccount = () => {
  const {selectedAccount} = useContext(Web3Context);
-//  console.log(selectedAccount)
  return(
       <Card padding={5}>
           <Heading>

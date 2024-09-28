@@ -1,5 +1,3 @@
-import { ethers } from "ethers";
-
 export const connectWallet = async () => {
 	try {
 		let chainId = null;
