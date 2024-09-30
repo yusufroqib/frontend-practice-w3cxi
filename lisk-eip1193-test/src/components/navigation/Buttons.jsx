@@ -1,34 +1,34 @@
 import { Flex } from "@chakra-ui/react";
-import React from "react";
+import React, { useContext } from "react";
 import WebButton from "../button/Button";
-import useWalletConnect from "../../hooks/useWalletConnect";
+import { Web3Context } from "../../context/Web3Context";
 
 const Buttons = () => {
 	const {
-		state,
-		handleWallet,
+		acctState,
 		switchToLiskSepolia,
 		switchToETHChain,
 		requestAccount,
 		handleLogout,
-	} = useWalletConnect();
+		connectWallet,
+	} = useContext(Web3Context);
 	return (
-		<Flex justify={"space-between"}>
-			{!state.selectedAccount && (
+		<Flex justify={"space-between"} mt={6}>
+			{!acctState.selectedAccount && (
 				<WebButton
-					onClick={handleWallet}
+					onClick={connectWallet}
 					type="button"
 					label="Connect Wallet"
 				/>
 			)}
-			{state.selectedAccount && (
+			{acctState.selectedAccount && (
 				<WebButton
 					onClick={requestAccount}
 					type="button"
 					label="Change Account"
 				/>
 			)}
-			{state.selectedAccount && state.chainId !== 4202 && (
+			{acctState.selectedAccount && acctState.chainId !== 4202 && (
 				<WebButton
 					onClick={switchToLiskSepolia}
 					type="button"
@@ -36,14 +36,14 @@ const Buttons = () => {
 				/>
 			)}
 
-			{state.selectedAccount && state.chainId === 4202 && (
+			{acctState.selectedAccount && acctState.chainId === 4202 && (
 				<WebButton
 					onClick={switchToETHChain}
 					type="button"
 					label="Switch to ETH Mainnet"
 				/>
 			)}
-			{state.selectedAccount && (
+			{acctState.selectedAccount && (
 				<WebButton onClick={handleLogout} type="button" label="Disconnect" />
 			)}
 		</Flex>

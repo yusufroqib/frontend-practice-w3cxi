@@ -2,26 +2,20 @@ import { useEffect, useState } from "react";
 import { useContext } from "react";
 import { Web3Context } from "../../context/Web3Context";
 import { Button, Card, Heading, Input, Text } from "@chakra-ui/react";
-import useWalletConnect from "../../hooks/useWalletConnect";
 
 const WalletBalance = () => {
-	const { selectedAccount, chainId } = useContext(Web3Context);
-	const { state, isLoading, getWalletBalance, balance, setBalance } =
-		useWalletConnect();
+	const { acctState, getWalletBalance, balance } =
+		useContext(Web3Context);
 	const [addressInput, setAddressInput] = useState("");
 
-	useEffect(() => {
-		getWalletBalance(selectedAccount);
-	}, [selectedAccount, chainId]);
+	// useEffect(() => {
+	// 	getWalletBalance(acctState.selectedAccount);
+	// }, [acctState.selectedAccount, acctState.chainId]);
 
 	const handleBalanceCheck = (e) => {
 		e.preventDefault();
 		if (!addressInput) return;
-		getWalletBalance(addressInput)
-			.then((balance) => {
-				setBalance(balance);
-			})
-			.catch((error) => console.log(error));
+		getWalletBalance(addressInput);
 	};
 
 	return (

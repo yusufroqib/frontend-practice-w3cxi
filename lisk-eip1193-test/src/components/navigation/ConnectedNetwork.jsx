@@ -3,19 +3,22 @@ import {Web3Context} from "../../context/Web3Context";
 import { Card, Heading, Text } from "@chakra-ui/react";
 
 const ConnectedNetwork = () => {
-	const { chainId } = useContext(Web3Context);
-	if (chainId === 4202) {
+	const { acctState } = useContext(Web3Context);
+	if (acctState.chainId === 4202) {
 		return (
 			<Card padding={5}>
 				<Heading>Connected Network</Heading>
-				<Text padding={2}>Sepolia Lisk</Text>
+				<Text padding={2}>0x{acctState.chainId}:Lisk Sepolia</Text>
 			</Card>
 		);
 	} else {
 		return (
 			<Card padding={5}>
 				<Heading>Connected Network</Heading>
-				<Text padding={2}> 0x{chainId?.toString(16)}</Text>
+				<Text padding={2}>
+					{" "}
+					0x{acctState.chainId}: {acctState.chainName}
+				</Text>
 			</Card>
 		);
 	}

@@ -2,6 +2,7 @@ import ConnectedAccount from "./ConnectedAccount";
 import ConnectedNetwork from "./ConnectedNetwork";
 import {  Container, Flex } from "@chakra-ui/react";
 import WalletBalance from "./WalletBalance";
+import Buttons from "./Buttons";
 
 const Navigation = () => {
   return (
@@ -12,6 +13,8 @@ const Navigation = () => {
           <ConnectedNetwork />
           <WalletBalance/>
         </Flex>
+        <Buttons />
+
       </Container>
     </nav>
   );
